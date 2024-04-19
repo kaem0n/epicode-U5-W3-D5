@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -19,6 +20,8 @@ import java.util.Objects;
 public class UserService {
     @Autowired
     private UserDAO ud;
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     public Page<User> findAll(int page, int size, String sort) {
         if (size > 50) size = 50;
@@ -34,7 +37,7 @@ public class UserService {
         if (ud.existsByUsername(payload.username())) throw new BadRequestException("Username " + payload.username() + " is not available.");
         else if (ud.existsByEmail(payload.email())) throw new BadRequestException("Email " + payload.email() + " is already being used by another account.");
         else {
-            User newUser = new User(payload.username(), payload.password(), payload.fullName(), payload.email(), UserRole.valueOf(payload.role()));
+            User newUser = new User(payload.username(), bcrypt.encode(payload.password()), payload.fullName(), payload.email(), UserRole.valueOf(payload.role()));
             return ud.save(newUser);
         }
     }

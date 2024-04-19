@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({"password", "role", "authorities", "accountNonExpired", "credentialsNonExpired", "accountNonLocked", "enabled"})
+@JsonIgnoreProperties({"password", "role", "tickets", "authorities", "accountNonExpired", "credentialsNonExpired", "accountNonLocked", "enabled"})
 public class User implements UserDetails {
     @Setter(AccessLevel.NONE)
     @Id

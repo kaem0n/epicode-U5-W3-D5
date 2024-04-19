@@ -35,13 +35,6 @@ public class UserController {
         us.delete(id);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    private User saveNewUser(@RequestBody @Validated UserDTO payload, BindingResult validation) {
-        if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
-        else return us.save(payload);
-    }
-
     @PutMapping("/{id}")
     private User updateUser(@PathVariable long id, @RequestBody @Validated UserDTO payload, BindingResult validation) {
         if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());

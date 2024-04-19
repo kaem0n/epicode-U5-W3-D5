@@ -55,4 +55,8 @@ public class UserService {
         found.setRole(UserRole.valueOf(payload.role()));
         return ud.save(found);
     }
+
+    public User findByUsername(String username) {
+        return ud.findByUsername(username).orElseThrow(() -> new NotFoundException("Username " + username + " not found."));
+    }
 }

@@ -7,6 +7,10 @@ import kaem0n.u5w3d5.exceptions.NotFoundException;
 import kaem0n.u5w3d5.payloads.UserDTO;
 import kaem0n.u5w3d5.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -15,6 +19,12 @@ import java.util.Objects;
 public class UserService {
     @Autowired
     private UserDAO ud;
+
+    public Page<User> findAll(int page, int size, String sort) {
+        if (size > 50) size = 50;
+        Pageable p = PageRequest.of(page, size, Sort.by(sort));
+        return ud.findAll(p);
+    }
 
     public User findById(long id) {
         return ud.findById(id).orElseThrow(() -> new NotFoundException(id));

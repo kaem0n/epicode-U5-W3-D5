@@ -33,7 +33,10 @@ public class UserService {
     public User save(UserDTO payload) {
         if (ud.existsByUsername(payload.username())) throw new BadRequestException("Username " + payload.username() + " is not available.");
         else if (ud.existsByEmail(payload.email())) throw new BadRequestException("Email " + payload.email() + " is already being used by another account.");
-        else return new User(payload.username(), payload.password(), payload.fullName(), payload.email(), UserRole.valueOf(payload.role()));
+        else {
+            User newUser = new User(payload.username(), payload.password(), payload.fullName(), payload.email(), UserRole.valueOf(payload.role()));
+            return ud.save(newUser);
+        }
     }
 
     public void delete(long id) {

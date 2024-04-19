@@ -17,19 +17,19 @@ public class TicketController {
     private TicketService ts;
 
     @GetMapping("/{id}")
-    private Ticket getTicketById(@PathVariable long id) {
+    public Ticket getTicketById(@PathVariable long id) {
         return ts.findById(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    private void deleteTicket(@PathVariable long id) {
+    public void deleteTicket(@PathVariable long id) {
         ts.delete(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private Ticket saveNewTicket(@RequestBody @Validated TicketDTO payload, BindingResult validation) {
+    public Ticket saveNewTicket(@RequestBody @Validated TicketDTO payload, BindingResult validation) {
         if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
         else return ts.save(payload);
     }

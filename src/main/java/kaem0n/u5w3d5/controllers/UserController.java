@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    private Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page,
+    public Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "10") int size,
                                    @RequestParam(defaultValue = "id") String sort) {
         return us.findAll(page, size, sort);
@@ -29,36 +29,36 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    private User getUserById(@PathVariable long id) {
+    public User getUserById(@PathVariable long id) {
         return us.findById(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('ADMIN')")
-    private void deleteUser(@PathVariable long id) {
+    public void deleteUser(@PathVariable long id) {
         us.delete(id);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    private User updateUser(@PathVariable long id, @RequestBody @Validated UserDTO payload, BindingResult validation) {
+    public User updateUser(@PathVariable long id, @RequestBody @Validated UserDTO payload, BindingResult validation) {
         if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
         else return us.update(id, payload);
     }
 
     @GetMapping("/me")
-    private User getMyProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
+    public User getMyProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
         return currentAuthenticatedUser;
     }
 
     @DeleteMapping("/me")
-    private void deleteMyProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
+    public void deleteMyProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
         us.delete(currentAuthenticatedUser.getId());
     }
 
     @PutMapping("/me")
-    private User updateMyProfile(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody @Validated UserDTO payload, BindingResult validation) {
+    public User updateMyProfile(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody @Validated UserDTO payload, BindingResult validation) {
         if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
         else return us.update(currentAuthenticatedUser.getId(), payload);
     }

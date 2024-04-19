@@ -19,6 +19,6 @@ public record EventDTO(@NotEmpty(message = "Title field must not be empty.")
                        @NotNull(message = "Capacity field must not be null.")
                        int maxCapacity,
                        @Min(value = 1)
-                       @NotNull(message = "Id field must not be null.")
+                       @NotNull(message = "Organizer ID field must not be null.")
                        long organizerId) {
 }

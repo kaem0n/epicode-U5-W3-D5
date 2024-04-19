@@ -7,6 +7,7 @@ import kaem0n.u5w3d5.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,18 +32,21 @@ public class EventController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('EVENT_ORGANIZER') or hasAuthority('ADMIN')")
     private void deleteEvent(@PathVariable long id) {
         es.delete(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('EVENT_ORGANIZER') or hasAuthority('ADMIN')")
     private Event saveNewEvent(@RequestBody @Validated EventDTO payload, BindingResult validation) {
         if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
         else return es.save(payload);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('EVENT_ORGANIZER') or hasAuthority('ADMIN')")
     private Event updateEvent(@PathVariable long id, @RequestBody @Validated EventDTO payload, BindingResult validation) {
         if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
         else return es.update(id, payload);

@@ -1,5 +1,6 @@
 package kaem0n.u5w3d5.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Event {
     @Column(name = "max_capacity")
     private int maxCapacity;
     @OneToMany(mappedBy = "event")
+    @JsonIgnore
     private List<Ticket> tickets;
 
     public Event(String title, String description, String place, LocalDate date, int maxCapacity, User organizer) {

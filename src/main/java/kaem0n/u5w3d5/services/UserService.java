@@ -51,7 +51,7 @@ public class UserService {
         User found = this.findById(id);
         if (!Objects.equals(found.getUsername(), payload.username()) && !ud.existsByUsername(payload.username())) found.setUsername(payload.username());
         else if (!Objects.equals(found.getUsername(), payload.username()) && ud.existsByUsername(payload.username())) throw new BadRequestException("Username " + payload.username() + " is not available.");
-        found.setPassword(payload.password());
+        found.setPassword(bcrypt.encode(payload.password()));
         found.setFullName(payload.fullName());
         if (!Objects.equals(found.getEmail(), payload.email()) && !ud.existsByEmail(payload.email())) found.setEmail(payload.email());
         else if (!Objects.equals(found.getEmail(), payload.email()) && ud.existsByEmail(payload.email())) throw new BadRequestException("Email " + payload.email() + " is already being used by another account.");
